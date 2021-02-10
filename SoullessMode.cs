@@ -56,7 +56,7 @@ namespace SoullessMode
                     fsm.GetAction<SpawnObjectFromGlobalPool>("Fire", 1).gameObject.Value.transform.localScale *= 2f;
                 }
                 //Aspid Mother
-                else if (fsm.FsmName == "Hatcher")
+                /*else if (fsm.FsmName == "Hatcher")
                 {
                     fsm.gameObject.transform.localScale *= 1.25f;
                     fsm.GetAction<DistanceFly>("Distance Fly", 5).speedMax = 10f;
@@ -70,8 +70,8 @@ namespace SoullessMode
                     fsm.GetAction<IntAdd>("Fire", 9).add = 0;
                     fsm.ChangeTransition("Distance Fly", "WAIT", "Fire Anticipate");
                     fsm.ChangeTransition("Fire", "WAIT", "Fire Anticipate");
-                }
-                //Wandering Husk + Husk Bully
+                }*/
+                //Wandering Husk + Husk Bully + Husk Hornhead
                 else if (fsm.FsmName == "Zombie Swipe")
                 {
                     fsm.FsmVariables.FindFsmFloat("Lunge Speed").Value = 20f;
@@ -86,13 +86,13 @@ namespace SoullessMode
                     fsm.ChangeTransition("Lunge", "LAND", "Reset");
                 }
                 //Goam
-                else if(fsm.FsmName == "Worm Control")
+                else if (fsm.FsmName == "Worm Control")
                 {
                     fsm.GetAction<Wait>("Up", 3).time = 0.1f;
                     fsm.GetAction<Wait>("Down", 2).time = 0.1f;
                 }
                 //Baldur
-                else if(fsm.FsmName == "Roller")
+                else if (fsm.FsmName == "Roller")
                 {
                     fsm.FsmVariables.FindFsmFloat("Acceleration").Value = 3f;
                     fsm.FsmVariables.FindFsmFloat("Max Speed").Value = 30f;
@@ -100,7 +100,7 @@ namespace SoullessMode
                     fsm.FsmVariables.FindFsmFloat("Roll time Min").Value = 10f;
                 }
                 //Elder Baldur
-                else if(fsm.FsmName == "Blocker Control")
+                else if (fsm.FsmName == "Blocker Control")
                 {
                     fsm.GetAction<WaitRandom>("Idle", 5).timeMin = 0.05f;
                     fsm.GetAction<WaitRandom>("Idle", 5).timeMax = 0.1f;
@@ -111,7 +111,7 @@ namespace SoullessMode
                     fsm.ChangeTransition("Roller Assign", "FINISHED", "Idle");
                 }
                 //False Knight
-                else if(fsm.FsmName == "FalseyControl")
+                else if (fsm.FsmName == "FalseyControl")
                 {
                     fsm.gameObject.GetComponent<HealthManager>().hp = 100;
 
@@ -124,7 +124,7 @@ namespace SoullessMode
                     fsm.FsmVariables.FindFsmInt("Slam Barrel Min").Value = 15;
                     fsm.FsmVariables.FindFsmInt("Slam Barrel Max").Value = 16;
                     fsm.FsmVariables.FindFsmInt("Stunned Amount").Value = -2;
-                    
+
                     fsm.GetAction<SetFloatValue>("To Phase 2", 0).floatValue = 0.02f;
                     fsm.GetAction<SetFloatValue>("To Phase 2", 1).floatValue = 0.03f;
                     fsm.GetAction<SetIntValue>("To Phase 2", 2).intValue = 20;
@@ -147,16 +147,79 @@ namespace SoullessMode
 
                 }
                 //Husk Guard
+                else if (fsm.FsmName == "Zombie Guard")
+                {
+                    fsm.GetAction<Wait>("Idle", 12).time = 0.05f;
+                    fsm.GetAction<SetFloatValue>("Check Left", 0).floatValue = -20f;
+                    fsm.GetAction<SetFloatValue>("Check Left", 1).floatValue = -30f;
+                    fsm.GetAction<SetFloatValue>("Check Right", 0).floatValue = 20f;
+                    fsm.GetAction<SetFloatValue>("Check Right", 0).floatValue = 30f;
+                    fsm.GetAction<SetFloatValue>("Jump L", 0).floatValue = 25f;
+                    fsm.GetAction<SetFloatValue>("Jump R", 0).floatValue = -25f;
+                    fsm.GetAction<SetFsmFloat>("Land", 10).setValue = 40f;
+                    fsm.GetAction<SetFsmFloat>("Land", 14).setValue = 40f;
+                    fsm.GetAction<Wait>("Attack", 2).time = 0.05f;
+                    fsm.GetAction<Wait>("Attack Recoil", 4).time = 0.05f;
+                    fsm.GetAction<Wait>("Cooldown", 1).time = 0.01f;
+                    fsm.GetAction<SetScale>("Land", 8).x = 2f;
+                    fsm.GetAction<SetScale>("Land", 12).x = 2f;
+                    fsm.GetAction<Wait>("Stomp Antic", 3).time = 0.05f;
+                    fsm.GetAction<Wait>("Stomp Cooldown", 1).time = 0.02f;
+
+                    foreach (var i in fsm.gameObject.GetComponent<tk2dSpriteAnimator>().Library.clips)
+                    {
+                        if (i.name == "Attack2")
+                        {
+                            i.fps *= 2f;
+                        }
+                        i.fps *= 1f;
+                    }
+                }
                 //Gruz Mother
+                else if (fsm.FsmName == "Big Fly Control")
+                {
+                    fsm.FsmVariables.FindFsmFloat("Slam Speed").Value = 100f;
+                    fsm.GetAction<Wait>("Fly", 3).time = 0.05f;
+                    fsm.GetAction<RandomFloat>("Buzz", 3).min = 0.25f;
+                    fsm.GetAction<RandomFloat>("Buzz", 3).min = 0.75f;
+                    fsm.GetAction<Wait>("Slam Antic", 12).time = 0.05f;
+                    fsm.GetAction<RandomFloat>("Slam Antic", 9).min = 4f;
+                    fsm.GetAction<RandomFloat>("Slam Antic", 9).max = 5f;
+                    fsm.GetAction<Wait>("Charge Antic", 11).time = 0.1f;
+
+                    
+                }
+                else if(fsm.FsmName == "bouncercontrol")
+                {
+                    fsm.FsmVariables.FindFsmFloat("Speed").Value = 20f;
+                }
                 //Husk Warrior
-                //Husk Hornhead
+                else if (fsm.FsmName == "ZombieShieldControl")
+                {
+                    fsm.GetAction<Wait>("Block Low", 1).time = 0.05f;
+                    fsm.GetAction<Wait>("Block High", 1).time = 0.05f;
+                    fsm.GetAction<SetFloatValue>("Shield Left High", 7).floatValue = -45f;
+                    fsm.GetAction<SetFloatValue>("Shield Left High", 8).floatValue = -55f;
+                    fsm.GetAction<SetFloatValue>("Shield Left Low", 8).floatValue = -45f;
+                    fsm.GetAction<SetFloatValue>("Shield Left Low", 9).floatValue = -55f;
+                    fsm.GetAction<SetFloatValue>("Shield Right High", 7).floatValue = 45f;
+                    fsm.GetAction<SetFloatValue>("Shield Right High", 8).floatValue = 55f;
+                    fsm.GetAction<SetFloatValue>("Shield Right Low", 7).floatValue = 45f;
+                    fsm.GetAction<SetFloatValue>("Shield Right Low", 8).floatValue = 55f;
+                    foreach (var i in fsm.gameObject.GetComponent<tk2dSpriteAnimator>().Library.clips)
+                    {
+                        if (i.name == "Attack1 A" || i.name == "Attack1 L" || i.name == "Attack1 S" || i.name == "Attack1 CD" || i.name == "Attack3 A1" || i.name == "Attack3 L1" || i.name == "Attack3 S1" || i.name == "Attack3 CD1" || i.name == "Attack3 L2" || i.name == "Attack3 CD2" || i.name == "Attack3 L3" || i.name == "Attack3 S3" || i.name == "Attack3 CD3")
+                        {
+                            i.fps *= 1.75f;
+                        }
+                    }
+                }
             }
 
             //Tiktik
             foreach(Climber climber in GameObject.FindObjectsOfType<Climber>())
             {
-                climber.speed *= 4;
-                climber.spinTime *= 2;
+                climber.speed *= 2.5f;
             }
         }
 
