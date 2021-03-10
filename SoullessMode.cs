@@ -192,10 +192,11 @@ namespace SoullessMode
                     fsm.GetAction<RandomFloat>("Buzz", 3).min = 0.25f;
                     fsm.GetAction<RandomFloat>("Buzz", 3).max = 0.75f;
                     fsm.GetAction<Wait>("Slam Antic", 12).time = 0.05f;
-                    fsm.GetAction<RandomFloat>("Slam Antic", 9).min = 4f;
-                    fsm.GetAction<RandomFloat>("Slam Antic", 9).max = 5f;
+                    fsm.GetAction<RandomFloat>("Slam Antic", 9).min = 2f;
+                    fsm.GetAction<RandomFloat>("Slam Antic", 9).max = 1f;
                     fsm.GetAction<Wait>("Charge Antic", 11).time = 0.1f;
                     fsm.gameObject.AddComponent<GruzMotherSpawner>();
+                    fsm.gameObject.GetComponent<HealthManager>().hp = (int)(fsm.gameObject.GetComponent<HealthManager>().hp * 1.4);
                 }
                 else if(fsm.FsmName == "bouncercontrol")
                 {

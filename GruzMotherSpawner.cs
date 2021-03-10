@@ -9,12 +9,33 @@ namespace SoullessMode
 {
     public class GruzMotherSpawner : MonoBehaviour
     {
-        /*private IEnumerator Start()
+        System.Random random = new System.Random();
+        int maxHP = 0;
+        private void Start()
         {
-            yield return new WaitWhile(() => !Input.GetKey(KeyCode.LeftBracket));
-            Modding.Logger.Log("Spawned Gruzzer!", Modding.LogLevel.Info);
-            GameObject gruzzer = Instantiate(SoullessMode.preloadedGameObjects["Gruzzer"]);
-            gruzzer.transform.position = HeroController.instance.transform.position;
-        }*/
+            maxHP = this.gameObject.GetComponent<HealthManager>().hp;
+            StartCoroutine(SpawnGruzzers());
+        }
+
+        private IEnumerator SpawnGruzzers()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(3f);
+                if(this.gameObject.GetComponent<HealthManager>().hp < maxHP)
+                {
+                    GameObject gruzzer = Instantiate(SoullessMode.preloadedGameObjects["Gruzzer"]);
+                    gruzzer.SetActive(true);
+                    if(random.Next(6) == 0)
+                    {
+                        PlayMakerFSM fsm = gruzzer.LocateMyFSM("Bouncer Control");
+                        fsm.FsmVariables.FindFsmFloat("Speed").Value = 15f;
+                        gruzzer.transform.localScale *= 1.5f;
+                        gruzzer.GetComponent<HealthManager>().hp = 20;
+                    }
+                    gruzzer.transform.position = this.gameObject.transform.position;
+                }
+            }
+        }
     }
 }
