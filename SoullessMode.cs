@@ -2,17 +2,26 @@
 using ModCommon.Util;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SoullessMode
 {
     public class SoullessMode : Mod, ITogglableMod
     {
+        public static Dictionary<string, GameObject> preloadedGameObjects = new Dictionary<string, GameObject> { };
         public override string GetVersion() => "0.1a";
-        public override void Initialize()
+        public override List<(string, string)> GetPreloadNames()
+        {
+            return new List<(string, string)>
+            {
+                ("Crossroads_07", "Uninfected Parent/Fly 1")
+            };
+        }
+        public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+            preloadedGameObjects.Add("Gruzzer", preloadedObjects["Crossroads_07"]["Uninfected Parent/Fly 1"]);
         }
-
         private void SceneManager_sceneLoaded(UnityEngine.SceneManagement.Scene arg0, UnityEngine.SceneManagement.LoadSceneMode arg1)
         {
             foreach(PlayMakerFSM fsm in Object.FindObjectsOfType<PlayMakerFSM>())
@@ -181,13 +190,12 @@ namespace SoullessMode
                     fsm.FsmVariables.FindFsmFloat("Slam Speed").Value = 100f;
                     fsm.GetAction<Wait>("Fly", 3).time = 0.05f;
                     fsm.GetAction<RandomFloat>("Buzz", 3).min = 0.25f;
-                    fsm.GetAction<RandomFloat>("Buzz", 3).min = 0.75f;
+                    fsm.GetAction<RandomFloat>("Buzz", 3).max = 0.75f;
                     fsm.GetAction<Wait>("Slam Antic", 12).time = 0.05f;
                     fsm.GetAction<RandomFloat>("Slam Antic", 9).min = 4f;
                     fsm.GetAction<RandomFloat>("Slam Antic", 9).max = 5f;
                     fsm.GetAction<Wait>("Charge Antic", 11).time = 0.1f;
-
-                    
+                    fsm.gameObject.AddComponent<GruzMotherSpawner>();
                 }
                 else if(fsm.FsmName == "bouncercontrol")
                 {
